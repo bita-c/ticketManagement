@@ -3,7 +3,7 @@ package com.zendesk.ticketing.domain.model;
 public enum TicketPriority {
 
   URGENT("urgent"),
-  HIGHT("high"),
+  HIGH("high"),
   NORMAL("normal"),
   LOW("low");
 

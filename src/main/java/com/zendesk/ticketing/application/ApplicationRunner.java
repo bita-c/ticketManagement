@@ -1,5 +1,6 @@
-package com.zendesk.ticketing.commandRunner;
+package com.zendesk.ticketing.application;
 
+import com.zendesk.ticketing.domain.model.Ticket;
 import com.zendesk.ticketing.domain.service.TicketService;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
@@ -37,11 +38,13 @@ public class ApplicationRunner implements CommandLineRunner{
         if (args.length != 2 ) {
           printUsage();
         }
-        restClientService.getTicket(args[1]);
+        Ticket ticket = restClientService.getTicket(args[1]);
+        System.out.println(ticket.toString());
 
       } else {
 
-        restClientService.getTicketsWithPaging();
+        List<Ticket> tickets = restClientService.getTicketsWithPaging();
+        tickets.forEach(ticket -> System.out.println(ticket.toString()));
       }
     }
   }

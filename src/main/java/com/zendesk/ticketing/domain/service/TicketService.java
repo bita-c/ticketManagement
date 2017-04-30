@@ -1,6 +1,8 @@
 package com.zendesk.ticketing.domain.service;
 
 import com.zendesk.ticketing.domain.model.Ticket;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

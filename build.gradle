@@ -35,10 +35,8 @@ dependencies {
 	testCompile("junit:junit")
 }
 
-
-
 bootRun {
-	if ( project.hasProperty('args') ) {
-		args project.args.split('\\s+')
+	if ( project.hasProperty('command') ) {
+		args project.command.split('\\s+')
 	}
 }

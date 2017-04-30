@@ -1,11 +1,10 @@
-package com.zendesk.ticketing;
+package com.zendesk.ticketing.domain.service;
 
 import com.zendesk.ticketing.domain.model.TicketListWrapper;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class Pager {
 
   public boolean isPaginated(ResponseEntity<TicketListWrapper> responseEntity) {
@@ -22,9 +21,4 @@ public class Pager {
   public String getNextPageUrl(ResponseEntity<TicketListWrapper> responseEntity) {
     return responseEntity.getBody().getNextPage();
   }
-
-  public String getPreviousPageUrl(ResponseEntity<TicketListWrapper> responseEntity) {
-    return responseEntity.getBody().getPreviousPage();
-  }
-
 }

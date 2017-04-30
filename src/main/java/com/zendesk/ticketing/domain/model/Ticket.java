@@ -2,6 +2,8 @@ package com.zendesk.ticketing.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Ticket {
@@ -89,14 +91,13 @@ public class Ticket {
   @Override
   public String toString() {
     return "Ticket{" +
-            "url='" + url + '\'' +
-            ", id=" + id + '\'' +
-            ", createdAt=" + id + '\'' +
-            ", updateAt=" + updatedAt + '\'' +
-            ", subject=" + subject + '\'' +
-            ", description=" + description + '\'' +
-            ", priority=" + (priority != null ? priority.getPriority() : "") + '\'' +
-            ", status=" + (status != null ? status.getStatus() : "") +
+            "id=" + id +
+            " | createdAt = " + createdAt +
+            " | updatedAt = " + updatedAt +
+            " | subject = " + StringUtils.abbreviate(StringUtils.remove(subject, "\n"), 20) +
+            " | description = " + StringUtils.abbreviate(StringUtils.remove(description, "\n"), 50) +
+            " | priority = " + (priority != null ? priority.getPriority() : "") +
+            " | status= " + (status != null ? status.getStatus() : "") +
             '}';
   }
 
