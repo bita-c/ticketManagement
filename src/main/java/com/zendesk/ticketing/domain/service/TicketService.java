@@ -1,14 +1,13 @@
 package com.zendesk.ticketing.domain.service;
 
 import com.zendesk.ticketing.domain.model.Ticket;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import com.zendesk.ticketing.domain.model.TicketPage;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface TicketService {
 
   Ticket getTicket(String id);
 
-  List<Ticket> getTicketsWithPaging();
+  TicketPage getTickets(Optional<String> url);
 }

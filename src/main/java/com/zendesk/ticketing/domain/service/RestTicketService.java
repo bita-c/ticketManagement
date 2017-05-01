@@ -1,26 +1,23 @@
 package com.zendesk.ticketing.domain.service;
 
 import com.zendesk.ticketing.Application;
+import com.zendesk.ticketing.domain.model.TicketPage;
 import com.zendesk.ticketing.infrastructure.Config;
 import com.zendesk.ticketing.domain.model.Ticket;
-import com.zendesk.ticketing.domain.model.TicketListWrapper;
 import com.zendesk.ticketing.domain.model.TicketWrapper;
 import com.zendesk.ticketing.infrastructure.RestClient;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service("TicketService")
-public class RestTicketService implements TicketService{
+public class RestTicketService implements TicketService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
@@ -28,74 +25,37 @@ public class RestTicketService implements TicketService{
   private RestClient restClient;
 
   @Autowired
-  private Pager pager;
-
-  @Autowired
   private Config config;
 
   public Ticket getTicket(String id) {
 
-    // TODO take out string substitution
-    String getTicketUrl = config.getBaseUrl().concat(config.getTicketPath());
-    Map<String, String> valuesMap = new HashMap<>();
-    valuesMap.put("id", id);
-    StrSubstitutor sub = new StrSubstitutor(valuesMap, "{", "}");
-    String url = sub.replace(getTicketUrl);
-
+    String url = config.getBaseUrl().concat(config.getTicketPath()).concat("/").concat(id).concat(".json");
     ResponseEntity<TicketWrapper> ticketResponseEntity = restClient.getRestTemplate().exchange(
             url, HttpMethod.GET, null, TicketWrapper.class);
 
-    LOGGER.info(ticketResponseEntity.getBody().getTicket().toString());
-
-    return ticketResponseEntity.getBody().getTicket();
-  }
-
-//  public List<Ticket> getTickets() {
-//
-//    String url = Config.BASE_URL.concat(Config.TICKETS_PATH);
-//
-//    ResponseEntity<TicketListWrapper> ticketResponseEntity = restTemplate.exchange(
-//            url, HttpMethod.GET, null, TicketListWrapper.class);
-//
-//    List<Ticket> ticketList = Arrays.asList(ticketResponseEntity.getBody().getTickets());
-//
-//    ticketList.forEach(ticket -> LOGGER.info(ticket.toString()));
-//
-//    return ticketList;
-//
-//  }
-
-  // TODO: cleanup this method with pagination
-  public List<Ticket> getTicketsWithPaging() {
-
-    String url = config.getBaseUrl().concat(config.getTicketsPath());
-
-    ResponseEntity<TicketListWrapper> ticketResponseEntity = restClient.getRestTemplate().exchange(
-            url, HttpMethod.GET, null, TicketListWrapper.class);
-
-    List<Ticket> tickets = new ArrayList<>();
-    tickets.addAll(ticketResponseEntity.getBody().getTickets());
-
-    if (pager.isPaginated(ticketResponseEntity)) {
-      tickets.addAll(getPagedTickets(ticketResponseEntity));
+    if (ticketResponseEntity.getStatusCode().equals(HttpStatus.OK)) {
+      LOGGER.info(ticketResponseEntity.getBody().getTicket().toString());
+      return ticketResponseEntity.getBody().getTicket();
+    } else {
+      throw new RestClientException("Unable to process request at this time!");
     }
 
-    tickets.forEach(ticket -> LOGGER.info(ticket.toString()));
-
-    return tickets;
   }
 
-  private List<Ticket> getPagedTickets(ResponseEntity<TicketListWrapper> ticketResponseEntity) {
+  public TicketPage getTickets(Optional<String> optionalUrl) {
 
-    List<Ticket> pagedTickets = new ArrayList<>();
-    while(pager.hasNextPage(ticketResponseEntity)) {
+    String url = optionalUrl.orElse(config.getBaseUrl().concat(config.getTicketsPath()));
 
-      String nextPageUrl = pager.getNextPageUrl(ticketResponseEntity);
-      ticketResponseEntity = restClient.getRestTemplate().exchange(
-              nextPageUrl, HttpMethod.GET, null, TicketListWrapper.class);
-      pagedTickets.addAll(ticketResponseEntity.getBody().getTickets());
+    ResponseEntity<TicketPage> ticketResponseEntity = restClient.getRestTemplate().exchange(
+            url, HttpMethod.GET, null, TicketPage.class);
+
+    if (ticketResponseEntity.getStatusCode().equals(HttpStatus.OK)) {
+      TicketPage ticketPage = ticketResponseEntity.getBody();
+      LOGGER.info(ticketPage.toString());
+      return ticketPage;
+    } else {
+      throw new RestClientException("Unable to process request at this time!");
     }
-    return pagedTickets;
   }
 
 }

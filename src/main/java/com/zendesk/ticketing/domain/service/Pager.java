@@ -1,24 +1,23 @@
 package com.zendesk.ticketing.domain.service;
 
-import com.zendesk.ticketing.domain.model.TicketListWrapper;
-import org.springframework.http.ResponseEntity;
+import com.zendesk.ticketing.domain.model.TicketPage;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Pager {
 
-  public boolean isPaginated(ResponseEntity<TicketListWrapper> responseEntity) {
+  public boolean isPaginated(TicketPage ticketPage) {
 
-    return responseEntity.getBody().getCount() > responseEntity.getBody().getTickets().size()
-            && responseEntity.getBody().getNextPage() != null;
+    return ticketPage.getCount() > ticketPage.getTickets().size()
+            && (ticketPage.getNextPage() != null && !ticketPage.getNextPage().isEmpty());
   }
 
-  public boolean hasNextPage(ResponseEntity<TicketListWrapper> responseEntity) {
+  public boolean hasNextPage(TicketPage ticketPage) {
 
-    return responseEntity.getBody().getNextPage()!= null;
+    return ticketPage.getNextPage() != null && !ticketPage.getNextPage().isEmpty();
   }
 
-  public String getNextPageUrl(ResponseEntity<TicketListWrapper> responseEntity) {
-    return responseEntity.getBody().getNextPage();
+  public String getNextPageUrl(TicketPage ticketPage) {
+    return ticketPage.getNextPage();
   }
 }

@@ -7,14 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TicketListWrapper {
+public class TicketPage {
 
   private List<Ticket> tickets;
   private String nextPage;
   private String previousPage;
   private int count;
 
-  public TicketListWrapper() {
+  public TicketPage() {
 
   }
 
@@ -22,7 +22,7 @@ public class TicketListWrapper {
     return tickets;
   }
 
-  public void setTickets( Ticket[]  tickets) {
+  public void setTickets(Ticket[]  tickets) {
     this.tickets = Arrays.asList(tickets);
   }
 
@@ -54,7 +54,7 @@ public class TicketListWrapper {
 
   @Override
   public String toString() {
-    return "TicketListWrapper{" +
+    return "TicketPage{" +
             "nextPage='" + nextPage + '\'' +
             ", previousPage=" + previousPage + '\'' +
             ", count=" + count +

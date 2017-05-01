@@ -13,7 +13,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
-	baseName = 'gs-consuming-rest'
+	baseName = 'ticketManagement'
 	version =  '0.1.0'
 }
 
@@ -26,6 +26,7 @@ targetCompatibility = 1.8
 
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter")
+
 	compile("org.springframework:spring-web")
 	compile("com.fasterxml.jackson.core:jackson-databind")
 	compile 'org.apache.commons:commons-lang3:3.5'
@@ -33,10 +34,13 @@ dependencies {
 
 
 	testCompile("junit:junit")
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 bootRun {
 	if ( project.hasProperty('command') ) {
 		args project.command.split('\\s+')
 	}
+	//java -jar build/libs/ticketManagement-0.1.0.jar ticket 1
 }
