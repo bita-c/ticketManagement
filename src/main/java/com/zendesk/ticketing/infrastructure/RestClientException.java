@@ -1,4 +1,4 @@
-package com.zendesk.ticketing.domain.service;
+package com.zendesk.ticketing.infrastructure;
 
 public class RestClientException extends RuntimeException {
 

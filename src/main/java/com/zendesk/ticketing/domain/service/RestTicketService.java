@@ -24,38 +24,20 @@ public class RestTicketService implements TicketService {
   @Autowired
   private RestClient restClient;
 
-  @Autowired
-  private Config config;
-
   public Ticket getTicket(String id) {
 
-    String url = config.getBaseUrl().concat(config.getTicketPath()).concat("/").concat(id).concat(".json");
-    ResponseEntity<TicketWrapper> ticketResponseEntity = restClient.getRestTemplate().exchange(
-            url, HttpMethod.GET, null, TicketWrapper.class);
-
-    if (ticketResponseEntity.getStatusCode().equals(HttpStatus.OK)) {
-      LOGGER.info(ticketResponseEntity.getBody().getTicket().toString());
-      return ticketResponseEntity.getBody().getTicket();
-    } else {
-      throw new RestClientException("Unable to process request at this time!");
-    }
+    Ticket ticket = restClient.getTicket(id);
+    LOGGER.info(ticket.toString());
+    return ticket;
 
   }
 
   public TicketPage getTickets(Optional<String> optionalUrl) {
 
-    String url = optionalUrl.orElse(config.getBaseUrl().concat(config.getTicketsPath()));
+    TicketPage ticketPage = restClient.getTickets(optionalUrl);
+    LOGGER.info(ticketPage.toString());
+    return ticketPage;
 
-    ResponseEntity<TicketPage> ticketResponseEntity = restClient.getRestTemplate().exchange(
-            url, HttpMethod.GET, null, TicketPage.class);
-
-    if (ticketResponseEntity.getStatusCode().equals(HttpStatus.OK)) {
-      TicketPage ticketPage = ticketResponseEntity.getBody();
-      LOGGER.info(ticketPage.toString());
-      return ticketPage;
-    } else {
-      throw new RestClientException("Unable to process request at this time!");
-    }
   }
 
 }
