@@ -1,17 +1,17 @@
 package com.zendesk.ticketing.infrastructure;
 
-public class RestClientException extends RuntimeException {
+public class TicketRestClientException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
   private String details;
 
-  public RestClientException(String passedReason, String passedDetails) {
+  public TicketRestClientException(String passedReason, String passedDetails) {
     super(passedReason);
     this.details = passedDetails;
   }
 
-  public RestClientException(String passedReason) {
+  public TicketRestClientException(String passedReason) {
     super(passedReason);
   }
 
