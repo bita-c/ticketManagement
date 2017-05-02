@@ -10,7 +10,7 @@
 ```
 
 *This will produce a jar file in
-uild/libs/ticketManagement-0.1.0.jar*
+build/libs/ticketManagement-0.1.0.jar*
 
 
 ###### Run the application
@@ -31,7 +31,7 @@ to see more tickets press enter.
  java -jar build/libs/ticketManagement-0.1.0.jar ticket <TICKET_ID>
 ```
 
-replace <TICKET_ID> with the id for ticket you want to view
+*replace <TICKET_ID> with the id for ticket you want to view*
 
 
 ###### Running Tests
