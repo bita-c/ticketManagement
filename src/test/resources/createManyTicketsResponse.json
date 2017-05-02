@@ -1,0 +1,11 @@
+{
+  "job_status": {
+    "id": "2d625d576bec98c7221d3df346f51b88",
+    "url": "https://bitacrosby.zendesk.com/api/v2/job_statuses/2d625d576bec98c7221d3df346f51b88.json",
+    "total": null,
+    "progress": null,
+    "status": "queued",
+    "message": null,
+    "results": null
+  }
+}
